@@ -128,7 +128,7 @@ namespace WeatherApp
                 label29.Text = "";
                 FileStream fs = new FileStream("data.txt", FileMode.Create, FileAccess.Write);
                 StreamWriter sw = new StreamWriter(fs);
-                String st = String.Format(@"http://weather.yahooapis.com/forecastrss?w=");
+                String st = String.Format(@"https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20weather.forecast%20where%20woeid%3D");
                 st = st + woeid;
                 XmlDocument wData = new XmlDocument();
                 wData.Load(st);
@@ -136,7 +136,7 @@ namespace WeatherApp
                 XmlNamespaceManager manager = new XmlNamespaceManager(wData.NameTable);
                 manager.AddNamespace("yweather", @"http://xml.weather.yahoo.com/ns/rss/1.0");
 
-                XmlNode channel = wData.SelectSingleNode("rss").SelectSingleNode("channel");
+                XmlNode channel = wData.SelectSingleNode("query").SelectSingleNode("results").SelectSingleNode("channel");
                 // XmlNodeList nodes = wData.SelectNodes("rss/channel/item/yweather:forecast", manager);
 
                 Temperature = channel.SelectSingleNode("item").SelectSingleNode("yweather:condition", manager).Attributes["temp"].Value;
